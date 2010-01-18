@@ -1,0 +1,34 @@
+#!/bin/sh
+
+if [ -z $@ ]
+then
+	echo "uzbl-install *.uzbl.tar.gz"
+	exit
+fi
+
+for a in $@
+do
+	TMP_DIRECTORY=/tmp/$a
+	mkdir -p $TMP_DIRECTORY
+	case $(file -b --mime-type $a) in
+		application/x-gzip)
+			( pwd_tmp=$PWD && cd /tmp/$a && tar xfz $pwd_tmp/$a )
+		;;
+	esac
+	NAME="$(cat $TMP_DIRECTORY/name)"
+	EXTENSION_DIRECTORY="$XDG_DATA_HOME/uzbl/extensions"
+	CONFIG_FILE="$XDG_CONFIG_HOME/uzbl/config"
+	mkdir -p $EXTENSION_DIRECTORY
+	
+	#cat $CONFIG_FILE > /tmp/uzbl-config
+	#cat $TMP_DIRECTORY/config | sed "s|$EXTENSION_DIRECTORY/$NAME|$TMP_DIRECTORY/scripts|" >> /tmp/uzbl-config
+	#cat /tmp/uzbl-config | uzbl-core -c -
+	
+	cat $TMP_DIRECTORY/config >> $CONFIG_FILE
+	cp -r $TMP_DIRECTORY $EXTENSION_DIRECTORY/$NAME
+	
+	for f in $(ls "$EXTENSION_DIRECTORY/$NAME/scripts")
+	do
+		sed -e "s|\$XDG_DATA_HOME/uzbl/scripts|$EXTENSION_DIRECTORY/$NAME/scripts|" -f $f
+	done
+done

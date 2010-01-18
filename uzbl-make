@@ -1,0 +1,28 @@
+#!/bin/sh
+
+if [ -z "$1" ]
+then
+	input=.
+else
+	input=$1
+fi
+
+if [ -z "$2" ]
+then
+	if [ $input = "." ]
+	then
+		output=$(basename $PWD).uzbl.tar.gz
+	else
+		output=$(basename $1).uzbl.tar.gz
+	fi
+else
+	output=$2
+fi
+
+#for f in $(ls "$input/scripts")
+#do
+#	sed -e "s|\$XDG_DATA_HOME/uzbl/scripts|$EXTENSION_DIRECTORY/$NAME/scripts|" -f $f
+#done
+
+#tar cf $output $input
+(cd $input && tar cfz ../$output .)
