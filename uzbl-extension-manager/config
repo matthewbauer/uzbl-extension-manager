@@ -1,0 +1,1 @@
+@on_event   DOWNLOAD_REQUEST    spawn $XDG_DATA_HOME/uzbl/extensions/uzbl-extension-manager/scripts/download.sh %s \@proxy_url

@@ -11,9 +11,9 @@ if [ -z "$2" ]
 then
 	if [ $input = "." ]
 	then
-		output=$(basename $PWD).uzbl.tar.gz
+		output=$(basename $PWD).uzbl
 	else
-		output=$(basename $1).uzbl.tar.gz
+		output=$(basename $input).uzbl
 	fi
 else
 	output=$2
@@ -21,8 +21,8 @@ fi
 
 #for f in $(ls "$input/scripts")
 #do
-#	sed -e "s|\$XDG_DATA_HOME/uzbl/scripts|$EXTENSION_DIRECTORY/$NAME/scripts|" -f $f
+#	sed -e "s|\$XDG_DATA_HOME/uzbl/scripts|$EXTENSION_DIRECTORY/$NAME/scripts|g" -f $f
 #done
 
 #tar cf $output $input
-(cd $input && tar cfz ../$output .)
+( cd $input && tar cfz ../$output . )
