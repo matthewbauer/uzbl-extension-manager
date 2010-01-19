@@ -17,6 +17,4 @@ test "x$url" = "x" && { echo "you must supply a url! ($url)"; exit 1; }
 if echo "$url" | grep -E '^.*\.uzbl$' >/dev/null;
 then
 	( tmp=$(mktemp); $GET "$url" -O $tmp; $XDG_DATA_HOME/uzbl/extensions/uzbl-extension-manager/scripts/uzbl-install $tmp )
-else
-	( cd "$dest"; $GET "$url")
 fi
