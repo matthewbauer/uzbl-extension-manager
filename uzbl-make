@@ -19,6 +19,8 @@ else
 	output=$2
 fi
 
+[ -f "$input/version" ] && uzbl-core -V > "$input/version"
+
 #for f in $(ls "$input/scripts")
 #do
 #	sed -e "s|\$XDG_DATA_HOME/uzbl/scripts|$EXTENSION_DIRECTORY/$NAME/scripts|g" -f $f

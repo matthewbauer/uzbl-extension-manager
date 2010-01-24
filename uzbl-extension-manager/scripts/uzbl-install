@@ -11,9 +11,9 @@ do
 	TMP_DIRECTORY=$(mktemp -d)
 	#mkdir -p $TMP_DIRECTORY
 	case $(file -b --mime-type $a) in
-		application/x-gzip)
-			( tar xfz $a -C $TMP_DIRECTORY )
-		;;
+		application/x-gzip) tar xfz $a -C $TMP_DIRECTORY;;
+		application/x-bzip) tar xfj $a -C $TMP_DIRECTORY;;
+		application/x-xz) tar xf --xz $a -C $TMP_DIRECTORY;;
 	esac
 	NAME="$(cat $TMP_DIRECTORY/name)"
 	EXTENSION_DIRECTORY="$XDG_DATA_HOME/uzbl/extensions"
@@ -34,9 +34,11 @@ do
 	fi
 
 	cp -r $TMP_DIRECTORY/* $EXTENSION_DIRECTORY/$NAME
-	
+
+	sed -n -e -r "s|(\$XDG_DATA_HOME/uzbl/scripts|@scripts_dir)|$EXTENSION_DIRECTORY/$NAME/scripts|g" "$EXTENSION_DIRECTORY/$NAME/config"
+
 	for f in $(ls "$EXTENSION_DIRECTORY/$NAME/scripts")
 	do
-		sed -n -e "s|\$XDG_DATA_HOME/uzbl/scripts|$EXTENSION_DIRECTORY/$NAME/scripts|g" "$EXTENSION_DIRECTORY/$NAME/scripts/$f"
+		sed -n -e -r "s|(\$XDG_DATA_HOME/uzbl/scripts|@scripts_dir)|$EXTENSION_DIRECTORY/$NAME/scripts|g" "$EXTENSION_DIRECTORY/$NAME/scripts/$f"
 	done
 done

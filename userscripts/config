@@ -1,0 +1,1 @@
+@on_event   LOAD_FINISH    spawn $XDG_DATA_HOME/uzbl/extensions/userscripts/scripts/userscript.sh
